@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нұржігіт & Эльвира - Құдалық тойына шақыру</title>
+    
+    <!-- ========================================================= -->
+    <!--  ФОТО МЕН МУЗЫКА СІЛТЕМЕЛЕРІ                               -->
+    <!-- ========================================================= -->
+    <script>
+        // Бұрынғы сақталған жауаптарды автоматты түрде тазалау
+        localStorage.removeItem('wedding_rsvps');
+
+        const CONFIG = {
+            // Суреттің тікелей сілтемесі:
+            bgImage: "https://i.ibb.co.com/h18YSWgL/img.jpg",
+            
+            // Vocaroo музыкасының MP3 сілтемесі:
+            musicUrl: "https://media.vocaroo.com/mp3/1oAwdvQRKxNC"
+        };
+    </script>
+    <!-- ========================================================= -->
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            100: '#FDF8E2',
+                            300: '#E5C887',
+                            500: '#C59B27',
+                            600: '#B28518',
+                            800: '#694B05',
+                        },
+                        cream: '#FAF6F0',
+                        deepRed: '#4A121A'
+                    },
+                    fontFamily: {
+                        script: ['Great Vibes', 'cursive'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FAF6F0;
+            color: #2D3748;
+            overflow-x: hidden;
+        }
+        
+        .font-script { font-family: 'Great Vibes', cursive; }
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+
+        .ornament-corner {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            pointer-events: none;
+            opacity: 0.85;
+            z-index: 20;
+        }
+
+        .ornament-top-left { top: 15px; left: 15px; }
+        .ornament-top-right { top: 15px; right: 15px; transform: scaleX(-1); }
+
+        .text-glow {
+            text-shadow: 0 2px 5px rgba(0,0,0,0.25), 0 0 12px rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+<body class="bg-cream text-gray-800 antialiased selection:bg-gold-300">
+
+    <!-- Audio Element -->
+    <audio id="weddingMusic" loop preload="auto">
+        <source id="musicSource" src="" type="audio/mpeg">
+        Сіздің браузеріңіз аудионы қолдамайды.
+    </audio>
+
+    <!-- Floating Audio Button -->
+    <div class="fixed top-5 right-5 z-50">
+        <button id="musicToggle" onclick="toggleMusic()" class="flex items-center gap-2 bg-white/90 backdrop-blur-md border border-gold-500/40 text-gold-800 px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95">
+            <span id="musicIcon" class="w-5 h-5 flex items-center justify-center text-gold-600">
+                <i class="fas font-solid fa-music animate-spin" style="animation-duration: 4s;"></i>
+            </span>
+            <span id="musicText" class="text-xs font-semibold tracking-wider">Әуен</span>
+        </button>
+    </div>
+
+    <main class="max-w-xl mx-auto min-h-screen my-0 md:my-6 bg-white shadow-2xl rounded-none md:rounded-3xl overflow-hidden relative border-0 md:border border-gold-300/30">
+
+        <!-- Local File Controls -->
+        <div class="bg-gold-100 p-3 border-b border-gold-300/50 text-xs text-center space-y-2">
+            <p class="font-bold text-gold-800">Құрылғыдан басқа файл таңдау:</p>
+            <div class="flex flex-wrap justify-center gap-2">
+                <label class="bg-white border border-gold-500 text-gold-800 px-3 py-1 rounded-lg cursor-pointer hover:bg-gold-300/20 font-medium">
+                    <i class="fas fa-image mr-1"></i> Сурет
+                    <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="uploadImage(event)">
+                </label>
+                <label class="bg-white border border-gold-500 text-gold-800 px-3 py-1 rounded-lg cursor-pointer hover:bg-gold-300/20 font-medium">
+                    <i class="fas fa-music mr-1"></i> Музыка
+                    <input type="file" id="audioInput" accept="audio/*" class="hidden" onchange="uploadAudio(event)">
+                </label>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <section id="heroSection" class="relative h-[560px] flex flex-col justify-between text-center p-6 bg-center bg-no-repeat bg-cover">
+            
+            <!-- Corner Kazakh Ornaments -->
+            <svg class="ornament-corner ornament-top-left" viewBox="0 0 100 100" fill="#C59B27">
+                <path d="M10,10 L40,10 C40,25 25,40 10,40 Z M20,20 L20,30 C25,25 25,25 30,20 Z" />
+                <path d="M0,0 L100,0 L100,10 L10,10 L10,100 L0,100 Z" />
+                <circle cx="25" cy="25" r="5" />
+            </svg>
+            <svg class="ornament-corner ornament-top-right" viewBox="0 0 100 100" fill="#C59B27">
+                <path d="M10,10 L40,10 C40,25 25,40 10,40 Z M20,20 L20,30 C25,25 25,25 30,20 Z" />
+                <path d="M0,0 L100,0 L100,10 L10,10 L10,100 L0,100 Z" />
+                <circle cx="25" cy="25" r="5" />
+            </svg>
+
+            <div class="absolute inset-0 bg-black/15 pointer-events-none z-0"></div>
+
+            <div class="pt-6 z-10">
+                <span class="inline-block border-b-2 border-gold-600 text-gold-800 tracking-[0.3em] uppercase text-xs font-bold pb-1 bg-white/70 px-3 py-0.5 rounded-full backdrop-blur-sm">
+                    Шақыру
+                </span>
+            </div>
+
+            <div class="my-auto z-10 py-4">
+                <p class="text-gold-800 font-serif text-2xl md:text-3xl tracking-widest uppercase mb-2 font-bold drop-shadow">
+                    Құдалық Той
+                </p>
+                <div class="w-16 h-0.5 bg-gold-600 mx-auto mb-4"></div>
+                
+                <h1 class="font-script text-6xl md:text-7xl text-gold-800 text-glow leading-tight font-bold">
+                    Нұржігіт
+                </h1>
+                <span class="font-serif text-3xl italic text-gold-600 block my-1 font-bold">&</span>
+                <h1 class="font-script text-6xl md:text-7xl text-gold-800 text-glow leading-tight font-bold">
+                    Эльвира
+                </h1>
+            </div>
+
+            <div class="pb-6 z-10">
+                <p class="text-gray-900 font-sans tracking-widest text-xs md:text-sm uppercase font-bold bg-white/80 backdrop-blur-md py-2 px-4 rounded-xl shadow-sm inline-block border border-gold-300">
+                    06 қараша 2026 жыл • Сағат 13:00
+                </p>
+            </div>
+        </section>
+
+        <!-- Шақыру мәтіні -->
+        <section class="py-12 px-6 md:px-10 text-center relative bg-cream">
+            <div class="flex justify-center items-center gap-3 mb-6">
+                <div class="h-[1px] w-12 bg-gold-500/50"></div>
+                <div class="text-gold-600 text-xl"><i class="fas fa-gem"></i></div>
+                <div class="h-[1px] w-12 bg-gold-500/50"></div>
+            </div>
+
+            <h2 class="font-serif text-xl md:text-2xl font-bold text-gray-800 leading-relaxed uppercase tracking-wider mb-6">
+                Құрметті ағайын-туыс, бауырлар, құда-жекжат!
+            </h2>
+
+            <p class="font-serif text-lg md:text-xl text-gray-700 leading-relaxed italic mb-8">
+                Сіз(дер)ді ұлымыз бен келініміз<br>
+                <span class="font-bold text-gold-600 font-sans not-italic text-xl block my-2">НҰРЖІГІТ & ЭЛЬВИРАНЫҢ</span>
+                Құдалық тойына арналған ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!
+            </p>
+
+            <div class="inline-block border border-gold-500/30 bg-white/80 rounded-2xl p-6 shadow-sm max-w-sm w-full">
+                <p class="text-sm uppercase tracking-widest text-gray-500 mb-1">Той иелері:</p>
+                <p class="font-serif text-2xl font-bold text-gold-800">Серікбай – Айбарша</p>
+            </div>
+        </section>
+
+        <!-- Таймер -->
+        <section class="py-10 px-6 bg-gradient-to-b from-cream to-white text-center border-y border-gold-300/30">
+            <h3 class="font-serif text-2xl text-gray-800 font-bold mb-2">Той салтанатына дейін:</h3>
+            <p class="text-xs text-gray-500 uppercase tracking-widest mb-6">Уақытты бірге санау</p>
+
+            <div id="countdown" class="grid grid-cols-4 gap-3 max-w-md mx-auto">
+                <div class="bg-white border border-gold-300/50 rounded-xl p-3 shadow-md">
+                    <span id="days" class="block font-serif text-3xl font-bold text-gold-600">00</span>
+                    <span class="text-xs text-gray-500 uppercase font-medium">Күн</span>
+                </div>
+                <div class="bg-white border border-gold-300/50 rounded-xl p-3 shadow-md">
+                    <span id="hours" class="block font-serif text-3xl font-bold text-gold-600">00</span>
+                    <span class="text-xs text-gray-500 uppercase font-medium">Сағат</span>
+                </div>
+                <div class="bg-white border border-gold-300/50 rounded-xl p-3 shadow-md">
+                    <span id="minutes" class="block font-serif text-3xl font-bold text-gold-600">00</span>
+                    <span class="text-xs text-gray-500 uppercase font-medium">Минут</span>
+                </div>
+                <div class="bg-white border border-gold-300/50 rounded-xl p-3 shadow-md">
+                    <span id="seconds" class="block font-serif text-3xl font-bold text-gold-600">00</span>
+                    <span class="text-xs text-gray-500 uppercase font-medium">Секунд</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Мекен-жай -->
+        <section class="py-12 px-6 md:px-10 bg-white">
+            <div class="text-center mb-8">
+                <span class="text-gold-600 text-3xl mb-2 block"><i class="fas fa-map-marked-alt"></i></span>
+                <h3 class="font-serif text-2xl font-bold text-gray-800 uppercase tracking-wider">Өтетін мекен-жайымыз</h3>
+                <div class="w-12 h-0.5 bg-gold-500 mx-auto mt-2"></div>
+            </div>
+
+            <div class="bg-cream/60 border border-gold-300/40 rounded-2xl p-6 text-center shadow-sm space-y-4 mb-8">
+                <div class="flex items-center justify-center gap-2 text-gold-800 font-semibold text-lg">
+                    <i class="far fa-calendar-alt text-gold-600"></i>
+                    <span>06 қараша 2026 жыл</span>
+                </div>
+                <div class="flex items-center justify-center gap-2 text-gold-800 font-semibold text-lg">
+                    <i class="far fa-clock text-gold-600"></i>
+                    <span>Сағат 13:00</span>
+                </div>
+                <hr class="border-gold-300/30">
+                <div>
+                    <h4 class="font-bold text-xl text-gray-800">«ZAMAN» мейрамханасы</h4>
+                    <p class="text-gray-600 text-sm mt-1">
+                        Қарағанды қаласы,<br>Көгілдір Тоғандар шағын ауданы, 18 А
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="https://2gis.kz/karaganda/search/Zaman%20%D0%BC%D0%B5%D0%B9%D1%80%D0%B0%D0%BC%D1%85%D0%B0%D0%BD%D0%B0%D1%81%D1%8B%20%D0%9A%D3%A9%D0%B3%D1%96%D0%BB%D0%B4%D1%96%D1%80%20%D0%A2%D0%BE%D2%93%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%2018%D0%90" target="_blank" rel="noopener noreferrer" 
+                   class="flex items-center justify-center gap-3 bg-[#24b974] hover:bg-[#1fa366] text-white py-3 px-5 rounded-xl font-medium transition shadow-md hover:shadow-lg">
+                    <i class="fas fa-location-arrow"></i>
+                    <span>2GIS картасымен ашу</span>
+                </a>
+                <a href="https://www.google.com/maps/search/?api=1&query=ZAMAN+restaurant+Karaganda+Goluбые+Prudy+18A" target="_blank" rel="noopener noreferrer" 
+                   class="flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white py-3 px-5 rounded-xl font-medium transition shadow-md hover:shadow-lg">
+                    <i class="fab fa-google"></i>
+                    <span>Google Maps арқылы</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- RSVP Form -->
+        <section class="py-12 px-6 md:px-10 bg-cream relative">
+            <div class="text-center mb-8">
+                <span class="text-gold-600 text-3xl mb-2 block"><i class="fas fa-envelope-open-text"></i></span>
+                <h3 class="font-serif text-2xl font-bold text-gray-800 uppercase tracking-wider">Келуіңізді растау</h3>
+                <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Өтініш, 01 қарашаға дейін жауап беріңіз</p>
+                <div class="w-12 h-0.5 bg-gold-500 mx-auto mt-2"></div>
+            </div>
+
+            <form id="rsvpForm" onsubmit="handleRSVP(event)" class="bg-white rounded-2xl p-6 md:p-8 shadow-md border border-gold-300/40 space-y-5">
+                <div>
+                    <label for="guestName" class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-2">
+                        Аты-жөніңіз *
+                    </label>
+                    <input type="text" id="guestName" required placeholder="Аты-жөніңізді жазыңыз" 
+                           class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-gold-500 focus:border-gold-500 outline-none transition text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-2">
+                        Тойға келесіз бе? *
+                    </label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center justify-center gap-2 border border-gray-300 p-3 rounded-xl cursor-pointer hover:bg-gold-100/50 has-[:checked]:border-gold-500 has-[:checked]:bg-gold-100/80 transition">
+                            <input type="radio" name="attendance" value="Келемін" checked class="accent-gold-600">
+                            <span class="text-sm font-medium text-gray-800">Иә, келемін</span>
+                        </label>
+                        <label class="flex items-center justify-center gap-2 border border-gray-300 p-3 rounded-xl cursor-pointer hover:bg-gold-100/50 has-[:checked]:border-gold-500 has-[:checked]:bg-gold-100/80 transition">
+                            <input type="radio" name="attendance" value="Келе алмаймын" class="accent-gold-600">
+                            <span class="text-sm font-medium text-gray-800">Өкінішке орай...</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="guestCount" class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-2">
+                        Қонақ саны
+                    </label>
+                    <select id="guestCount" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-gold-500 focus:border-gold-500 outline-none transition text-sm">
+                        <option value="1 адам">1 адам</option>
+                        <option value="2 адам" selected>2 адам</option>
+                        <option value="3+ адам">3+ адам (отбасымен)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 hover:from-gold-800 hover:to-gold-600 text-white font-semibold py-3.5 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+                    Жауапты жіберу
+                </button>
+            </form>
+
+            <div id="rsvpSuccess" class="hidden mt-6 bg-emerald-50 border border-emerald-300 text-emerald-800 p-6 rounded-2xl text-center shadow-md">
+                <i class="fas fa-check-circle text-4xl text-emerald-500 mb-2"></i>
+                <h4 class="font-serif text-xl font-bold mb-1">Рахмет! Жауабыңыз қабылданды.</h4>
+                <p class="text-sm text-emerald-700">Сізді тойда күтеміз!</p>
+            </div>
+
+            <div id="rsvpListContainer" class="mt-8 hidden">
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-gray-500">Тіркелген жауаптар</h4>
+                    <button onclick="clearRSVPList()" class="text-xs text-red-500 hover:text-red-700 underline font-medium">
+                        Өшіру
+                    </button>
+                </div>
+                <div id="rsvpList" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
+            </div>
+        </section>
+
+        <footer class="py-8 bg-gray-900 text-white text-center relative overflow-hidden">
+            <div class="opacity-20 text-gold-300 text-6xl my-2">
+                <i class="fas fa-infinity"></i>
+            </div>
+            <p class="font-script text-3xl text-gold-300 mb-1">Нұржігіт & Эльвира</p>
+            <p class="text-xs text-gray-400 font-sans tracking-widest uppercase">Құдалық Той шақыруы • 2026</p>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const heroSection = document.getElementById('heroSection');
+            heroSection.style.backgroundImage = `url('${CONFIG.bgImage}')`;
+            
+            const musicSource = document.getElementById('musicSource');
+            const audio = document.getElementById('weddingMusic');
+            musicSource.src = CONFIG.musicUrl;
+            audio.load();
+        });
+
+        function uploadImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('heroSection').style.backgroundImage = `url('${e.target.result}')`;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function uploadAudio(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const audioUrl = URL.createObjectURL(file);
+                const audio = document.getElementById('weddingMusic');
+                const musicSource = document.getElementById('musicSource');
+                
+                musicSource.src = audioUrl;
+                audio.load();
+                if (isPlaying) {
+                    audio.play();
+                }
+            }
+        }
+
+        const audio = document.getElementById('weddingMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicText = document.getElementById('musicText');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                musicIcon.innerHTML = '<i class="fas fa-play"></i>';
+                musicText.textContent = 'Әуен';
+                isPlaying = false;
+            } else {
+                audio.play().then(() => {
+                    musicIcon.innerHTML = '<i class="fas fa-music animate-spin" style="animation-duration: 4s;"></i>';
+                    musicText.textContent = 'Тоқтату';
+                    isPlaying = true;
+                }).catch(err => {
+                    alert("Аудио ойнатылмады. Парақшаны жаңартып, қайта байқап көріңіз!");
+                });
+            }
+        }
+
+        const targetDate = new Date('2026-11-06T13:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+                document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+            } else {
+                document.getElementById('countdown').innerHTML = '<div class="col-span-4 text-gold-600 font-serif text-2xl font-bold">Той басталды!</div>';
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        function handleRSVP(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('guestName').value.trim();
+            const attendance = document.querySelector('input[name="attendance"]:checked').value;
+            const count = document.getElementById('guestCount').value;
+
+            if (!name) return;
+
+            const rsvpData = {
+                name: name,
+                attendance: attendance,
+                count: count,
+                timestamp: new Date().toLocaleString('kk-KZ')
+            };
+
+            let savedRSVPs = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
+            savedRSVPs.push(rsvpData);
+            localStorage.setItem('wedding_rsvps', JSON.stringify(savedRSVPs));
+
+            document.getElementById('rsvpForm').classList.add('hidden');
+            document.getElementById('rsvpSuccess').classList.remove('hidden');
+
+            renderRSVPList();
+        }
+
+        function clearRSVPList() {
+            localStorage.removeItem('wedding_rsvps');
+            renderRSVPList();
+        }
+
+        function renderRSVPList() {
+            const savedRSVPs = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
+            const listContainer = document.getElementById('rsvpListContainer');
+            const listEl = document.getElementById('rsvpList');
+
+            if (savedRSVPs.length > 0) {
+                listContainer.classList.remove('hidden');
+                listEl.innerHTML = savedRSVPs.map(item => `
+                    <div class="bg-white p-3 rounded-xl border border-gold-300/30 text-xs flex justify-between items-center">
+                        <div>
+                            <span class="font-bold text-gray-800">${item.name}</span>
+                            <span class="text-gray-500 block">${item.count} • ${item.attendance}</span>
+                        </div>
+                        <span class="text-[10px] text-gray-400">${item.timestamp}</span>
+                    </div>
+                `).join('');
+            } else {
+                listContainer.classList.add('hidden');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderRSVPList();
+        });
+    </script>
+</body>
+</html>
