@@ -85,8 +85,8 @@
 </head>
 <body class="bg-cream text-gray-800 antialiased selection:bg-gold-300">
 
-    <!-- Audio Element -->
-    <audio id="weddingMusic" loop preload="auto">
+    <!-- Audio Element (Бет ашылған бойда ойнайды) -->
+    <audio id="weddingMusic" loop preload="auto" autoplay muted playsinline>
         <source id="musicSource" src="" type="audio/mpeg">
         Сіздің браузеріңіз аудионы қолдамайды.
     </audio>
@@ -95,9 +95,9 @@
     <div class="fixed top-5 right-5 z-50">
         <button id="musicToggle" onclick="toggleMusic()" class="flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95">
             <span id="musicIcon" class="w-5 h-5 flex items-center justify-center text-white">
-                <i class="fas font-solid fa-play"></i>
+                <i class="fas font-solid fa-music animate-spin" style="animation-duration: 4s;"></i>
             </span>
-            <span id="musicText" class="text-xs font-semibold tracking-wider text-white">Ойнату</span>
+            <span id="musicText" class="text-xs font-semibold tracking-wider text-white">Тоқтату</span>
         </button>
     </div>
 
@@ -317,7 +317,7 @@
         const audio = document.getElementById('weddingMusic');
         const musicIcon = document.getElementById('musicIcon');
         const musicText = document.getElementById('musicText');
-        let isPlaying = false;
+        let isPlaying = true;
 
         document.addEventListener('DOMContentLoaded', () => {
             const heroSection = document.getElementById('heroSection');
@@ -327,27 +327,31 @@
             musicSource.src = CONFIG.musicUrl;
             audio.load();
 
-            // Автоматты түрде қосылуға тырысу
-            tryAutoplay();
+            // Бет ашылған сәтте фонода ойнатуды бастау
+            audio.play().then(() => {
+                // Қолданушы экранды түрткенде/айналдырғанда дыбысты шығару
+                enableAudioOnInteraction();
+            }).catch(() => {
+                enableAudioOnInteraction();
+            });
         });
 
-        function tryAutoplay() {
-            audio.play().then(() => {
+        function enableAudioOnInteraction() {
+            const unlock = () => {
+                audio.muted = false;
+                audio.play();
                 isPlaying = true;
                 updateMusicUI(true);
-            }).catch(() => {
-                // Браузер бұғаттаған жағдайда экранға кез келген жерге басылғанда бірден ойнату
-                const unlockAudio = () => {
-                    audio.play().then(() => {
-                        isPlaying = true;
-                        updateMusicUI(true);
-                        document.removeEventListener('click', unlockAudio);
-                        document.removeEventListener('touchstart', unlockAudio);
-                    });
-                };
-                document.addEventListener('click', unlockAudio);
-                document.addEventListener('touchstart', unlockAudio);
-            });
+                
+                // Оқиғаларды тазалау
+                window.removeEventListener('click', unlock);
+                window.removeEventListener('touchstart', unlock);
+                window.removeEventListener('scroll', unlock);
+            };
+
+            window.addEventListener('click', unlock, { once: true });
+            window.addEventListener('touchstart', unlock, { once: true });
+            window.addEventListener('scroll', unlock, { once: true });
         }
 
         function updateMusicUI(playing) {
@@ -366,11 +370,10 @@
                 isPlaying = false;
                 updateMusicUI(false);
             } else {
+                audio.muted = false;
                 audio.play().then(() => {
                     isPlaying = true;
                     updateMusicUI(true);
-                }).catch(err => {
-                    console.error("Ойнату қатесі:", err);
                 });
             }
         }
