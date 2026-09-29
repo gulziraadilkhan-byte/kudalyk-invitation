@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Нұржігіт & Эльвира - Құдалық тойына шақыру</title>
-
+    
     <!-- ========================================================= -->
-    <!--  WHATSAPP & TELEGRAM ПРЕВЬЮ (OPEN GRAPH META TAGS)        -->
+    <!--  WHATSAPP / TELEGRAM / SOCIAL MEDIA META TAGS (OG TAGS)   -->
     <!-- ========================================================= -->
     <meta property="og:title" content="Нұржігіт & Эльвира — Құдалық тойына шақыру">
     <meta property="og:description" content="Құрметті қонақтар! Сіздерді ұлымыз бен келініміздің Құдалық тойына арналған ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!">
@@ -15,14 +15,18 @@
     <meta property="og:type" content="website">
 
     <!-- ========================================================= -->
-    <!--  ФОТО МЕН МУЗЫКА СІЛТЕМЕЛЕРІ                              -->
+    <!--  ФОТО МЕН МУЗЫКА СІЛТЕМЕЛЕРІ ВА CONFIG                    -->
     <!-- ========================================================= -->
     <script>
+        localStorage.removeItem('wedding_rsvps');
+
         const CONFIG = {
             bgImage: "https://i.ibb.co.com/h18YSWgL/img.jpg",
-            musicUrl: "https://media.vocaroo.com/mp3/1oAwdvQRKxNC"
+            musicUrl: "https://media.vocaroo.com/mp3/1oAwdvQRKxNC",
+            jsonEndpoint: "https://formspree.io/f/xbjnqpyz"
         };
     </script>
+    <!-- ========================================================= -->
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -46,7 +50,6 @@
                             800: '#694B05',
                         },
                         cream: '#FAF6F0',
-                        deepRed: '#4A121A'
                     },
                     fontFamily: {
                         script: ['Great Vibes', 'cursive'],
@@ -74,92 +77,79 @@
             width: 80px;
             height: 80px;
             pointer-events: none;
-            opacity: 0.85;
+            opacity: 0.9;
             z-index: 20;
         }
 
         .ornament-top-left { top: 15px; left: 15px; }
         .ornament-top-right { top: 15px; right: 15px; transform: scaleX(-1); }
 
-        .text-glow {
-            text-shadow: 0 2px 5px rgba(0,0,0,0.25), 0 0 12px rgba(255, 255, 255, 0.9);
+        .text-glow-white {
+            text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 15px rgba(255, 255, 255, 0.4);
         }
     </style>
 </head>
 <body class="bg-cream text-gray-800 antialiased selection:bg-gold-300">
 
-    <!-- Audio Element -->
-    <audio id="weddingMusic" loop preload="auto">
+    <!-- Audio Element (autoplay) -->
+    <audio id="weddingMusic" loop preload="auto" autoplay muted>
         <source id="musicSource" src="" type="audio/mpeg">
         Сіздің браузеріңіз аудионы қолдамайды.
     </audio>
 
     <!-- Floating Audio Button -->
     <div class="fixed top-5 right-5 z-50">
-        <button id="musicToggle" onclick="toggleMusic()" class="flex items-center gap-2 bg-white/90 backdrop-blur-md border border-gold-500/40 text-gold-800 px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95">
-            <span id="musicIcon" class="w-5 h-5 flex items-center justify-center text-gold-600">
-                <i class="fas fa-play"></i>
+        <button id="musicToggle" onclick="toggleMusic()" class="flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95">
+            <span id="musicIcon" class="w-5 h-5 flex items-center justify-center text-white">
+                <i class="fas font-solid fa-music animate-spin" style="animation-duration: 4s;"></i>
             </span>
-            <span id="musicText" class="text-xs font-semibold tracking-wider">Әуен</span>
+            <span id="musicText" class="text-xs font-semibold tracking-wider text-white">Әуен</span>
         </button>
     </div>
 
     <main class="max-w-xl mx-auto min-h-screen my-0 md:my-6 bg-white shadow-2xl rounded-none md:rounded-3xl overflow-hidden relative border-0 md:border border-gold-300/30">
 
-        <!-- Local File Controls -->
-        <div class="bg-gold-100 p-3 border-b border-gold-300/50 text-xs text-center space-y-2">
-            <p class="font-bold text-gold-800">Құрылғыдан басқа файл таңдау:</p>
-            <div class="flex flex-wrap justify-center gap-2">
-                <label class="bg-white border border-gold-500 text-gold-800 px-3 py-1 rounded-lg cursor-pointer hover:bg-gold-300/20 font-medium">
-                    <i class="fas fa-image mr-1"></i> Сурет
-                    <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="uploadImage(event)">
-                </label>
-                <label class="bg-white border border-gold-500 text-gold-800 px-3 py-1 rounded-lg cursor-pointer hover:bg-gold-300/20 font-medium">
-                    <i class="fas fa-music mr-1"></i> Музыка
-                    <input type="file" id="audioInput" accept="audio/*" class="hidden" onchange="uploadAudio(event)">
-                </label>
-            </div>
-        </div>
-
-        <!-- Hero Section -->
-        <section id="heroSection" class="relative h-[560px] flex flex-col justify-between text-center p-6 bg-center bg-no-repeat bg-cover">
+        <!-- Hero Section (Суреті бар және үстіндегі мәтіндері АҚ түсті) -->
+        <section id="heroSection" class="relative h-[580px] flex flex-col justify-between text-center p-6 bg-center bg-no-repeat bg-cover">
             
-            <svg class="ornament-corner ornament-top-left" viewBox="0 0 100 100" fill="#C59B27">
+            <!-- Corner Kazakh Ornaments (White/Gold) -->
+            <svg class="ornament-corner ornament-top-left" viewBox="0 0 100 100" fill="#FFFFFF">
                 <path d="M10,10 L40,10 C40,25 25,40 10,40 Z M20,20 L20,30 C25,25 25,25 30,20 Z" />
                 <path d="M0,0 L100,0 L100,10 L10,10 L10,100 L0,100 Z" />
                 <circle cx="25" cy="25" r="5" />
             </svg>
-            <svg class="ornament-corner ornament-top-right" viewBox="0 0 100 100" fill="#C59B27">
+            <svg class="ornament-corner ornament-top-right" viewBox="0 0 100 100" fill="#FFFFFF">
                 <path d="M10,10 L40,10 C40,25 25,40 10,40 Z M20,20 L20,30 C25,25 25,25 30,20 Z" />
                 <path d="M0,0 L100,0 L100,10 L10,10 L10,100 L0,100 Z" />
                 <circle cx="25" cy="25" r="5" />
             </svg>
 
-            <div class="absolute inset-0 bg-black/15 pointer-events-none z-0"></div>
+            <!-- Overlay for contrast -->
+            <div class="absolute inset-0 bg-black/40 pointer-events-none z-0"></div>
 
             <div class="pt-6 z-10">
-                <span class="inline-block border-b-2 border-gold-600 text-gold-800 tracking-[0.3em] uppercase text-xs font-bold pb-1 bg-white/70 px-3 py-0.5 rounded-full backdrop-blur-sm">
+                <span class="inline-block border border-white/40 text-white tracking-[0.3em] uppercase text-xs font-bold pb-1 bg-black/30 px-4 py-1 rounded-full backdrop-blur-md">
                     Шақыру
                 </span>
             </div>
 
             <div class="my-auto z-10 py-4">
-                <p class="text-gold-800 font-serif text-2xl md:text-3xl tracking-widest uppercase mb-2 font-bold drop-shadow">
+                <p class="text-white font-serif text-2xl md:text-3xl tracking-widest uppercase mb-2 font-bold drop-shadow-lg">
                     Құдалық Той
                 </p>
-                <div class="w-16 h-0.5 bg-gold-600 mx-auto mb-4"></div>
+                <div class="w-16 h-0.5 bg-white/80 mx-auto mb-4"></div>
                 
-                <h1 class="font-script text-6xl md:text-7xl text-gold-800 text-glow leading-tight font-bold">
+                <h1 class="font-script text-6xl md:text-7xl text-white text-glow-white leading-tight font-bold">
                     Нұржігіт
                 </h1>
-                <span class="font-serif text-3xl italic text-gold-600 block my-1 font-bold">&</span>
-                <h1 class="font-script text-6xl md:text-7xl text-gold-800 text-glow leading-tight font-bold">
+                <span class="font-serif text-3xl italic text-white/90 block my-1 font-bold">&</span>
+                <h1 class="font-script text-6xl md:text-7xl text-white text-glow-white leading-tight font-bold">
                     Эльвира
                 </h1>
             </div>
 
             <div class="pb-6 z-10">
-                <p class="text-gray-900 font-sans tracking-widest text-xs md:text-sm uppercase font-bold bg-white/80 backdrop-blur-md py-2 px-4 rounded-xl shadow-sm inline-block border border-gold-300">
+                <p class="text-white font-sans tracking-widest text-xs md:text-sm uppercase font-bold bg-black/40 backdrop-blur-md py-2.5 px-5 rounded-xl shadow-lg inline-block border border-white/30">
                     06 қараша 2026 жыл • Сағат 13:00
                 </p>
             </div>
@@ -254,7 +244,7 @@
             </div>
         </section>
 
-        <!-- RSVP Form (JSON Payload enabled) -->
+        <!-- RSVP Form -->
         <section class="py-12 px-6 md:px-10 bg-cream relative">
             <div class="text-center mb-8">
                 <span class="text-gold-600 text-3xl mb-2 block"><i class="fas fa-envelope-open-text"></i></span>
@@ -268,7 +258,7 @@
                     <label for="guestName" class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-2">
                         Аты-жөніңіз *
                     </label>
-                    <input type="text" id="guestName" name="guestName" required placeholder="Аты-жөніңізді жазыңыз" 
+                    <input type="text" id="guestName" required placeholder="Аты-жөніңізді жазыңыз" 
                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-gold-500 focus:border-gold-500 outline-none transition text-sm">
                 </div>
 
@@ -292,7 +282,7 @@
                     <label for="guestCount" class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-2">
                         Қонақ саны
                     </label>
-                    <select id="guestCount" name="guestCount" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-gold-500 focus:border-gold-500 outline-none transition text-sm">
+                    <select id="guestCount" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-gold-500 focus:border-gold-500 outline-none transition text-sm">
                         <option value="1 адам">1 адам</option>
                         <option value="2 адам" selected>2 адам</option>
                         <option value="3+ адам">3+ адам (отбасымен)</option>
@@ -338,76 +328,63 @@
         let isPlaying = false;
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('heroSection').style.backgroundImage = `url('${CONFIG.bgImage}')`;
+            const heroSection = document.getElementById('heroSection');
+            heroSection.style.backgroundImage = `url('${CONFIG.bgImage}')`;
             
             const musicSource = document.getElementById('musicSource');
             musicSource.src = CONFIG.musicUrl;
             audio.load();
 
-            // Автоойнату логикасы (пайдаланушы бірінші рет экрнады түрткенде автоматты ойнау)
-            const autoPlayAudio = () => {
-                if (!isPlaying) {
+            startAutoplay();
+        });
+
+        function startAutoplay() {
+            audio.muted = false;
+            audio.play().then(() => {
+                isPlaying = true;
+                updateMusicUI(true);
+            }).catch(err => {
+                const playOnInteraction = () => {
+                    audio.muted = false;
                     audio.play().then(() => {
                         isPlaying = true;
-                        musicIcon.innerHTML = '<i class="fas fa-music animate-spin" style="animation-duration: 4s;"></i>';
-                        musicText.textContent = 'Тоқтату';
-                        document.removeEventListener('click', autoPlayAudio);
-                        document.removeEventListener('touchstart', autoPlayAudio);
-                        document.removeEventListener('scroll', autoPlayAudio);
-                    }).catch(() => {});
-                }
-            };
+                        updateMusicUI(true);
+                    });
+                    document.removeEventListener('click', playOnInteraction);
+                    document.removeEventListener('touchstart', playOnInteraction);
+                };
+                document.addEventListener('click', playOnInteraction);
+                document.addEventListener('touchstart', playOnInteraction);
+            });
+        }
 
-            document.addEventListener('click', autoPlayAudio);
-            document.addEventListener('touchstart', autoPlayAudio);
-            document.addEventListener('scroll', autoPlayAudio);
-        });
+        function updateMusicUI(playing) {
+            if (playing) {
+                musicIcon.innerHTML = '<i class="fas fa-music animate-spin text-white" style="animation-duration: 4s;"></i>';
+                musicText.textContent = 'Тоқтату';
+            } else {
+                musicIcon.innerHTML = '<i class="fas fa-play text-white"></i>';
+                musicText.textContent = 'Әуен';
+            }
+        }
 
         function toggleMusic() {
             if (isPlaying) {
                 audio.pause();
-                musicIcon.innerHTML = '<i class="fas fa-play"></i>';
-                musicText.textContent = 'Әуен';
                 isPlaying = false;
+                updateMusicUI(false);
             } else {
+                audio.muted = false;
                 audio.play().then(() => {
-                    musicIcon.innerHTML = '<i class="fas fa-music animate-spin" style="animation-duration: 4s;"></i>';
-                    musicText.textContent = 'Тоқтату';
                     isPlaying = true;
+                    updateMusicUI(true);
                 }).catch(err => {
-                    alert("Аудио ойнатылмады. Парақшаны түртіп көріңіз!");
+                    alert("Аудио ойнатылмады.");
                 });
             }
         }
 
-        function uploadImage(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('heroSection').style.backgroundImage = `url('${e.target.result}')`;
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function uploadAudio(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const audioUrl = URL.createObjectURL(file);
-                const musicSource = document.getElementById('musicSource');
-                
-                musicSource.src = audioUrl;
-                audio.load();
-                audio.play().then(() => {
-                    musicIcon.innerHTML = '<i class="fas fa-music animate-spin" style="animation-duration: 4s;"></i>';
-                    musicText.textContent = 'Тоқтату';
-                    isPlaying = true;
-                });
-            }
-        }
-
-        // Countdown Timer
+        // Таймер
         const targetDate = new Date('2026-11-06T13:00:00').getTime();
 
         function updateCountdown() {
@@ -432,50 +409,57 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // RSVP Form handling via JSON
+        // RSVP Формасын JSON ретінде жіберу (POST Request)
         async function handleRSVP(event) {
             event.preventDefault();
 
+            const submitBtn = document.getElementById('submitBtn');
             const name = document.getElementById('guestName').value.trim();
             const attendance = document.querySelector('input[name="attendance"]:checked').value;
             const count = document.getElementById('guestCount').value;
 
             if (!name) return;
 
-            const payloadJSON = {
-                title: "Құдалық тойына жаңа жауап",
-                guestName: name,
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Жіберілуде...';
+
+            const rsvpData = {
+                event: "Құдалық той - Нұржігіт & Эльвира",
+                name: name,
                 attendance: attendance,
-                guestCount: count,
-                timestamp: new Date().toLocaleString('kk-KZ')
+                guest_count: count,
+                submitted_at: new Date().toLocaleString('kk-KZ')
             };
 
-            // LocalStorage-ке сақтау (JSON)
-            let savedRSVPs = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
-            savedRSVPs.push(payloadJSON);
-            localStorage.setItem('wedding_rsvps', JSON.stringify(savedRSVPs));
-
-            // Web3Forms немесе API-ге JSON жіберу үлгісі
             try {
-                await fetch("https://api.web3forms.com/submit", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
-                    },
-                    body: JSON.stringify({
-                        access_key: "YOUR_WEB3FORMS_ACCESS_KEY", // Поштаңызға келсін десеңіз Web3Forms кілтін қойыңыз
-                        ...payloadJSON
-                    })
-                });
-            } catch (err) {
-                console.log("JSON жіберілді (offline/local mode)");
+                if (CONFIG.jsonEndpoint) {
+                    await fetch(CONFIG.jsonEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(rsvpData)
+                    });
+                }
+
+                let savedRSVPs = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
+                savedRSVPs.push(rsvpData);
+                localStorage.setItem('wedding_rsvps', JSON.stringify(savedRSVPs));
+
+                document.getElementById('rsvpForm').classList.add('hidden');
+                document.getElementById('rsvpSuccess').classList.remove('hidden');
+                renderRSVPList();
+
+            } catch (error) {
+                console.error('Қате орын алды:', error);
+                alert("Жіберу кезінде қателік өтті, бірақ жауабыңыз құрылғыға сақталды.");
+                document.getElementById('rsvpForm').classList.add('hidden');
+                document.getElementById('rsvpSuccess').classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Жауапты жіберу';
             }
-
-            document.getElementById('rsvpForm').classList.add('hidden');
-            document.getElementById('rsvpSuccess').classList.remove('hidden');
-
-            renderRSVPList();
         }
 
         function clearRSVPList() {
@@ -493,10 +477,10 @@
                 listEl.innerHTML = savedRSVPs.map(item => `
                     <div class="bg-white p-3 rounded-xl border border-gold-300/30 text-xs flex justify-between items-center">
                         <div>
-                            <span class="font-bold text-gray-800">${item.guestName}</span>
-                            <span class="text-gray-500 block">${item.guestCount} • ${item.attendance}</span>
+                            <span class="font-bold text-gray-800">${item.name}</span>
+                            <span class="text-gray-500 block">${item.guest_count || item.count} • ${item.attendance}</span>
                         </div>
-                        <span class="text-[10px] text-gray-400">${item.timestamp}</span>
+                        <span class="text-[10px] text-gray-400">${item.submitted_at || item.timestamp}</span>
                     </div>
                 `).join('');
             } else {
