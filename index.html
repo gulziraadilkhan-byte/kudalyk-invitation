@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Нұржігіт & Эльвира - Құдалық тойына шақыру</title>
     
-    <!-- WHATSAPP / TELEGRAM / SOCIAL MEDIA META TAGS (OG TAGS) -->
     <meta property="og:title" content="Нұржігіт & Эльвира — Құдалық тойына шақыру">
     <meta property="og:description" content="Құрметті қонақтар! Сіздерді ұлымыз бен келініміздің Құдалық тойына арналған ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!">
     <meta property="og:image" content="https://i.ibb.co.com/h18YSWgL/img.jpg">
@@ -13,22 +12,19 @@
     <meta property="og:type" content="website">
 
     <script>
-        localStorage.removeItem('wedding_rsvps');
-
         const CONFIG = {
             bgImage: "https://i.ibb.co.com/h18YSWgL/img.jpg",
             musicUrl: "https://media.vocaroo.com/mp3/1oAwdvQRKxNC",
-            jsonEndpoint: "https://formspree.io/f/xbjnqpyz"
+            // Осы жерге Google Apps Script сілтемесін қойыңыз:
+            googleSheetAppUrl: "https://script.google.com/macros/s/AKfycbwIPaMJFnxXpIRwLuL6tib1HFPQCJ3WwKSOIVtoqWdB1BT_ZzDaP-MrjhxT6h34OERlYg/exec" 
         };
     </script>
 
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS & Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -62,38 +58,19 @@
             color: #2D3748;
             overflow-x: hidden;
         }
-        
         .font-script { font-family: 'Great Vibes', cursive; }
         .font-serif { font-family: 'Cormorant Garamond', serif; }
-
-        .ornament-corner {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            pointer-events: none;
-            opacity: 0.9;
-            z-index: 20;
-        }
-
-        .ornament-top-left { top: 15px; left: 15px; }
-        .ornament-top-right { top: 15px; right: 15px; transform: scaleX(-1); }
-
-        .text-glow-white {
-            text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 15px rgba(255, 255, 255, 0.4);
-        }
+        .text-glow-white { text-shadow: 0 2px 10px rgba(0,0,0,0.7), 0 0 15px rgba(255, 255, 255, 0.4); }
     </style>
 </head>
 <body class="bg-cream text-gray-800 antialiased selection:bg-gold-300">
 
-    <!-- Audio Element (Бет ашылған бойда ойнайды) -->
     <audio id="weddingMusic" loop preload="auto" autoplay muted playsinline>
         <source id="musicSource" src="" type="audio/mpeg">
-        Сіздің браузеріңіз аудионы қолдамайды.
     </audio>
 
-    <!-- Floating Audio Button -->
     <div class="fixed top-5 right-5 z-50">
-        <button id="musicToggle" onclick="toggleMusic()" class="flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95">
+        <button id="musicToggle" onclick="toggleMusic()" class="flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-full shadow-lg transition-all duration-300 hover:scale-105 active:scale-95">
             <span id="musicIcon" class="w-5 h-5 flex items-center justify-center text-white">
                 <i class="fas font-solid fa-music animate-spin" style="animation-duration: 4s;"></i>
             </span>
@@ -105,18 +82,6 @@
 
         <!-- Hero Section -->
         <section id="heroSection" class="relative h-[580px] flex flex-col justify-between text-center p-6 bg-center bg-no-repeat bg-cover">
-            
-            <svg class="ornament-corner ornament-top-left" viewBox="0 0 100 100" fill="#FFFFFF">
-                <path d="M10,10 L40,10 C40,25 25,40 10,40 Z M20,20 L20,30 C25,25 25,25 30,20 Z" />
-                <path d="M0,0 L100,0 L100,10 L10,10 L10,100 L0,100 Z" />
-                <circle cx="25" cy="25" r="5" />
-            </svg>
-            <svg class="ornament-corner ornament-top-right" viewBox="0 0 100 100" fill="#FFFFFF">
-                <path d="M10,10 L40,10 C40,25 25,40 10,40 Z M20,20 L20,30 C25,25 25,25 30,20 Z" />
-                <path d="M0,0 L100,0 L100,10 L10,10 L10,100 L0,100 Z" />
-                <circle cx="25" cy="25" r="5" />
-            </svg>
-
             <div class="absolute inset-0 bg-black/40 pointer-events-none z-0"></div>
 
             <div class="pt-6 z-10">
@@ -149,12 +114,6 @@
 
         <!-- Шақыру мәтіні -->
         <section class="py-12 px-6 md:px-10 text-center relative bg-cream">
-            <div class="flex justify-center items-center gap-3 mb-6">
-                <div class="h-[1px] w-12 bg-gold-500/50"></div>
-                <div class="text-gold-600 text-xl"><i class="fas fa-gem"></i></div>
-                <div class="h-[1px] w-12 bg-gold-500/50"></div>
-            </div>
-
             <h2 class="font-serif text-xl md:text-2xl font-bold text-gray-800 leading-relaxed uppercase tracking-wider mb-6">
                 Құрметті ағайын-туыс, бауырлар, құда-жекжат!
             </h2>
@@ -171,37 +130,11 @@
             </div>
         </section>
 
-        <!-- Таймер -->
-        <section class="py-10 px-6 bg-gradient-to-b from-cream to-white text-center border-y border-gold-300/30">
-            <h3 class="font-serif text-2xl text-gray-800 font-bold mb-2">Той салтанатына дейін:</h3>
-            <p class="text-xs text-gray-500 uppercase tracking-widest mb-6">Уақытты бірге санау</p>
-
-            <div id="countdown" class="grid grid-cols-4 gap-3 max-w-md mx-auto">
-                <div class="bg-white border border-gold-300/50 rounded-xl p-3 shadow-md">
-                    <span id="days" class="block font-serif text-3xl font-bold text-gold-600">00</span>
-                    <span class="text-xs text-gray-500 uppercase font-medium">Күн</span>
-                </div>
-                <div class="bg-white border border-gold-300/50 rounded-xl p-3 shadow-md">
-                    <span id="hours" class="block font-serif text-3xl font-bold text-gold-600">00</span>
-                    <span class="text-xs text-gray-500 uppercase font-medium">Сағат</span>
-                </div>
-                <div class="bg-white border border-gold-300/50 rounded-xl p-3 shadow-md">
-                    <span id="minutes" class="block font-serif text-3xl font-bold text-gold-600">00</span>
-                    <span class="text-xs text-gray-500 uppercase font-medium">Минут</span>
-                </div>
-                <div class="bg-white border border-gold-300/50 rounded-xl p-3 shadow-md">
-                    <span id="seconds" class="block font-serif text-3xl font-bold text-gold-600">00</span>
-                    <span class="text-xs text-gray-500 uppercase font-medium">Секунд</span>
-                </div>
-            </div>
-        </section>
-
         <!-- Мекен-жай -->
-        <section class="py-12 px-6 md:px-10 bg-white">
+        <section class="py-12 px-6 md:px-10 bg-white border-t border-gold-300/30">
             <div class="text-center mb-8">
                 <span class="text-gold-600 text-3xl mb-2 block"><i class="fas fa-map-marked-alt"></i></span>
                 <h3 class="font-serif text-2xl font-bold text-gray-800 uppercase tracking-wider">Өтетін мекен-жайымыз</h3>
-                <div class="w-12 h-0.5 bg-gold-500 mx-auto mt-2"></div>
             </div>
 
             <div class="bg-cream/60 border border-gold-300/40 rounded-2xl p-6 text-center shadow-sm space-y-4 mb-8">
@@ -215,7 +148,7 @@
                 </div>
                 <hr class="border-gold-300/30">
                 <div>
-                    <h4 class="font-bold text-xl text-gray-800">«ZAMAN» мейрамханасы</h4>
+                    <h4 class="font-bold text-xl text-gray-800">Құдалық той Нұржігіт-Эльвира</h4>
                     <p class="text-gray-600 text-sm mt-1">
                         Қарағанды қаласы,<br>Көгілдір Тоғандар шағын ауданы, 18 А
                     </p>
@@ -223,13 +156,11 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <a href="https://2gis.kz/karaganda/search/Zaman%20%D0%BC%D0%B5%D0%B9%D1%80%D0%B0%D0%BC%D1%85%D0%B0%D0%BD%D0%B0%D1%81%D1%8B%20%D0%9A%D3%A9%D0%B3%D1%96%D0%bb%D0%B4%D1%96%D1%80%20%D0%A2%D0%BE%D2%93%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%2018%D0%90" target="_blank" rel="noopener noreferrer" 
-                   class="flex items-center justify-center gap-3 bg-[#24b974] hover:bg-[#1fa366] text-white py-3 px-5 rounded-xl font-medium transition shadow-md hover:shadow-lg">
+                <a href="https://2gis.kz/karaganda/search/Zaman%20%D0%BC%D0%B5%D0%B9%D1%80%D0%B0%D0%BC%D1%85%D0%B0%D0%BD%D0%B0%D1%81%D1%8B%20%D0%9A%D3%A9%D0%B3%D1%96%D0%bb%D0%B4%D1%96%D1%80%20%D0%A2%D0%BE%D2%93%D0%B0%D0%BD%D0%B4%D0%B0%D1%80%2018%D0%90" target="_blank" class="flex items-center justify-center gap-3 bg-[#24b974] hover:bg-[#1fa366] text-white py-3 px-5 rounded-xl font-medium transition shadow-md">
                     <i class="fas fa-location-arrow"></i>
                     <span>2GIS картасымен ашу</span>
                 </a>
-                <a href="https://www.google.com/maps/search/?api=1&query=ZAMAN+restaurant+Karaganda+Goluбые+Prudy+18A" target="_blank" rel="noopener noreferrer" 
-                   class="flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white py-3 px-5 rounded-xl font-medium transition shadow-md hover:shadow-lg">
+                <a href="https://www.google.com/maps/search/?api=1&query=ZAMAN+restaurant+Karaganda+Goluбые+Prudy+18A" target="_blank" class="flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white py-3 px-5 rounded-xl font-medium transition shadow-md">
                     <i class="fab fa-google"></i>
                     <span>Google Maps арқылы</span>
                 </a>
@@ -242,7 +173,6 @@
                 <span class="text-gold-600 text-3xl mb-2 block"><i class="fas fa-envelope-open-text"></i></span>
                 <h3 class="font-serif text-2xl font-bold text-gray-800 uppercase tracking-wider">Келуіңізді растау</h3>
                 <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Өтініш, 01 қарашаға дейін жауап беріңіз</p>
-                <div class="w-12 h-0.5 bg-gold-500 mx-auto mt-2"></div>
             </div>
 
             <form id="rsvpForm" onsubmit="handleRSVP(event)" class="bg-white rounded-2xl p-6 md:p-8 shadow-md border border-gold-300/40 space-y-5">
@@ -250,8 +180,7 @@
                     <label for="guestName" class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-2">
                         Аты-жөніңіз *
                     </label>
-                    <input type="text" id="guestName" required placeholder="Аты-жөніңізді жазыңыз" 
-                           class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-gold-500 focus:border-gold-500 outline-none transition text-sm">
+                    <input type="text" id="guestName" required placeholder="Аты-жөніңізді жазыңыз" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-gold-500 outline-none transition text-sm">
                 </div>
 
                 <div>
@@ -259,11 +188,11 @@
                         Тойға келесіз бе? *
                     </label>
                     <div class="grid grid-cols-2 gap-3">
-                        <label class="flex items-center justify-center gap-2 border border-gray-300 p-3 rounded-xl cursor-pointer hover:bg-gold-100/50 has-[:checked]:border-gold-500 has-[:checked]:bg-gold-100/80 transition">
+                        <label class="flex items-center justify-center gap-2 border border-gray-300 p-3 rounded-xl cursor-pointer hover:bg-gold-100/50 transition">
                             <input type="radio" name="attendance" value="Келемін" checked class="accent-gold-600">
                             <span class="text-sm font-medium text-gray-800">Иә, келемін</span>
                         </label>
-                        <label class="flex items-center justify-center gap-2 border border-gray-300 p-3 rounded-xl cursor-pointer hover:bg-gold-100/50 has-[:checked]:border-gold-500 has-[:checked]:bg-gold-100/80 transition">
+                        <label class="flex items-center justify-center gap-2 border border-gray-300 p-3 rounded-xl cursor-pointer hover:bg-gold-100/50 transition">
                             <input type="radio" name="attendance" value="Келе алмаймын" class="accent-gold-600">
                             <span class="text-sm font-medium text-gray-800">Өкінішке орай...</span>
                         </label>
@@ -274,39 +203,26 @@
                     <label for="guestCount" class="block text-xs font-semibold uppercase tracking-wider text-gray-700 mb-2">
                         Қонақ саны
                     </label>
-                    <select id="guestCount" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-gold-500 focus:border-gold-500 outline-none transition text-sm">
+                    <select id="guestCount" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-gold-500 outline-none transition text-sm">
                         <option value="1 адам">1 адам</option>
                         <option value="2 адам" selected>2 адам</option>
                         <option value="3+ адам">3+ адам (отбасымен)</option>
                     </select>
                 </div>
 
-                <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 hover:from-gold-800 hover:to-gold-600 text-white font-semibold py-3.5 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0">
+                <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 hover:from-gold-800 text-white font-semibold py-3.5 rounded-xl shadow-lg transition-all">
                     Жауапты жіберу
                 </button>
             </form>
 
             <div id="rsvpSuccess" class="hidden mt-6 bg-emerald-50 border border-emerald-300 text-emerald-800 p-6 rounded-2xl text-center shadow-md">
                 <i class="fas fa-check-circle text-4xl text-emerald-500 mb-2"></i>
-                <h4 class="font-serif text-xl font-bold mb-1">Рахмет! Жауабыңыз қабылданды.</h4>
+                <h4 class="font-serif text-xl font-bold mb-1">Рахмет! Жауабыңыз сақталды.</h4>
                 <p class="text-sm text-emerald-700">Сізді тойда күтеміз!</p>
-            </div>
-
-            <div id="rsvpListContainer" class="mt-8 hidden">
-                <div class="flex justify-between items-center mb-3">
-                    <h4 class="text-xs font-semibold uppercase tracking-wider text-gray-500">Тіркелген жауаптар</h4>
-                    <button onclick="clearRSVPList()" class="text-xs text-red-500 hover:text-red-700 underline font-medium">
-                        Өшіру
-                    </button>
-                </div>
-                <div id="rsvpList" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
             </div>
         </section>
 
-        <footer class="py-8 bg-gray-900 text-white text-center relative overflow-hidden">
-            <div class="opacity-20 text-gold-300 text-6xl my-2">
-                <i class="fas fa-infinity"></i>
-            </div>
+        <footer class="py-8 bg-gray-900 text-white text-center">
             <p class="font-script text-3xl text-gold-300 mb-1">Нұржігіт & Эльвира</p>
             <p class="text-xs text-gray-400 font-sans tracking-widest uppercase">Құдалық Той шақыруы • 2026</p>
         </footer>
@@ -315,95 +231,26 @@
 
     <script>
         const audio = document.getElementById('weddingMusic');
-        const musicIcon = document.getElementById('musicIcon');
-        const musicText = document.getElementById('musicText');
         let isPlaying = true;
 
         document.addEventListener('DOMContentLoaded', () => {
-            const heroSection = document.getElementById('heroSection');
-            heroSection.style.backgroundImage = `url('${CONFIG.bgImage}')`;
-            
-            const musicSource = document.getElementById('musicSource');
-            musicSource.src = CONFIG.musicUrl;
+            document.getElementById('heroSection').style.backgroundImage = `url('${CONFIG.bgImage}')`;
+            document.getElementById('musicSource').src = CONFIG.musicUrl;
             audio.load();
-
-            // Бет ашылған сәтте фонода ойнатуды бастау
-            audio.play().then(() => {
-                // Қолданушы экранды түрткенде/айналдырғанда дыбысты шығару
-                enableAudioOnInteraction();
-            }).catch(() => {
-                enableAudioOnInteraction();
-            });
         });
-
-        function enableAudioOnInteraction() {
-            const unlock = () => {
-                audio.muted = false;
-                audio.play();
-                isPlaying = true;
-                updateMusicUI(true);
-                
-                // Оқиғаларды тазалау
-                window.removeEventListener('click', unlock);
-                window.removeEventListener('touchstart', unlock);
-                window.removeEventListener('scroll', unlock);
-            };
-
-            window.addEventListener('click', unlock, { once: true });
-            window.addEventListener('touchstart', unlock, { once: true });
-            window.addEventListener('scroll', unlock, { once: true });
-        }
-
-        function updateMusicUI(playing) {
-            if (playing) {
-                musicIcon.innerHTML = '<i class="fas fa-music animate-spin text-white" style="animation-duration: 4s;"></i>';
-                musicText.textContent = 'Тоқтату';
-            } else {
-                musicIcon.innerHTML = '<i class="fas fa-play text-white"></i>';
-                musicText.textContent = 'Ойнату';
-            }
-        }
 
         function toggleMusic() {
             if (isPlaying) {
                 audio.pause();
                 isPlaying = false;
-                updateMusicUI(false);
+                document.getElementById('musicText').textContent = 'Ойнату';
             } else {
-                audio.muted = false;
-                audio.play().then(() => {
-                    isPlaying = true;
-                    updateMusicUI(true);
-                });
+                audio.play();
+                isPlaying = true;
+                document.getElementById('musicText').textContent = 'Тоқтату';
             }
         }
 
-        // Таймер
-        const targetDate = new Date('2026-11-06T13:00:00').getTime();
-
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const difference = targetDate - now;
-
-            if (difference > 0) {
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-                document.getElementById('days').innerText = days < 10 ? '0' + days : days;
-                document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
-                document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
-                document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
-            } else {
-                document.getElementById('countdown').innerHTML = '<div class="col-span-4 text-gold-600 font-serif text-2xl font-bold">Той басталды!</div>';
-            }
-        }
-
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        // RSVP Формасын JSON ретінде жіберу (POST Request)
         async function handleRSVP(event) {
             event.preventDefault();
 
@@ -415,75 +262,32 @@
             if (!name) return;
 
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Жіберілуде...';
+            submitBtn.textContent = 'Сақталуда...';
 
-            const rsvpData = {
-                event: "Құдалық той - Нұржігіт & Эльвира",
+            const data = {
                 name: name,
                 attendance: attendance,
-                guest_count: count,
-                submitted_at: new Date().toLocaleString('kk-KZ')
+                guest_count: count
             };
 
             try {
-                if (CONFIG.jsonEndpoint) {
-                    await fetch(CONFIG.jsonEndpoint, {
+                if (CONFIG.googleSheetAppUrl && CONFIG.googleSheetAppUrl !== "YOUR_GOOGLE_SCRIPT_URL_HERE") {
+                    await fetch(CONFIG.googleSheetAppUrl, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(rsvpData)
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
                     });
                 }
-
-                let savedRSVPs = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
-                savedRSVPs.push(rsvpData);
-                localStorage.setItem('wedding_rsvps', JSON.stringify(savedRSVPs));
-
+                
                 document.getElementById('rsvpForm').classList.add('hidden');
                 document.getElementById('rsvpSuccess').classList.remove('hidden');
-                renderRSVPList();
-
             } catch (error) {
-                console.error('Қате орын алды:', error);
+                console.error('Қате:', error);
                 document.getElementById('rsvpForm').classList.add('hidden');
                 document.getElementById('rsvpSuccess').classList.remove('hidden');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Жауапты жіберу';
             }
         }
-
-        function clearRSVPList() {
-            localStorage.removeItem('wedding_rsvps');
-            renderRSVPList();
-        }
-
-        function renderRSVPList() {
-            const savedRSVPs = JSON.parse(localStorage.getItem('wedding_rsvps') || '[]');
-            const listContainer = document.getElementById('rsvpListContainer');
-            const listEl = document.getElementById('rsvpList');
-
-            if (savedRSVPs.length > 0) {
-                listContainer.classList.remove('hidden');
-                listEl.innerHTML = savedRSVPs.map(item => `
-                    <div class="bg-white p-3 rounded-xl border border-gold-300/30 text-xs flex justify-between items-center">
-                        <div>
-                            <span class="font-bold text-gray-800">${item.name}</span>
-                            <span class="text-gray-500 block">${item.guest_count} • ${item.attendance}</span>
-                        </div>
-                        <span class="text-[10px] text-gray-400">${item.submitted_at}</span>
-                    </div>
-                `).join('');
-            } else {
-                listContainer.classList.add('hidden');
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            renderRSVPList();
-        });
     </script>
 </body>
 </html>
