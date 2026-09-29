@@ -15,7 +15,6 @@
         const CONFIG = {
             bgImage: "https://i.ibb.co.com/h18YSWgL/img.jpg",
             musicUrl: "https://media.vocaroo.com/mp3/1oAwdvQRKxNC",
-            // Осы жерге Google Apps Script сілтемесін қойыңыз:
             googleSheetAppUrl: "https://script.google.com/macros/s/AKfycbwIPaMJFnxXpIRwLuL6tib1HFPQCJ3WwKSOIVtoqWdB1BT_ZzDaP-MrjhxT6h34OERlYg/exec" 
         };
     </script>
@@ -65,16 +64,16 @@
 </head>
 <body class="bg-cream text-gray-800 antialiased selection:bg-gold-300">
 
-    <audio id="weddingMusic" loop preload="auto" autoplay muted playsinline>
+    <audio id="weddingMusic" loop preload="auto">
         <source id="musicSource" src="" type="audio/mpeg">
     </audio>
 
     <div class="fixed top-5 right-5 z-50">
         <button id="musicToggle" onclick="toggleMusic()" class="flex items-center gap-2 bg-black/40 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-full shadow-lg transition-all duration-300 hover:scale-105 active:scale-95">
             <span id="musicIcon" class="w-5 h-5 flex items-center justify-center text-white">
-                <i class="fas font-solid fa-music animate-spin" style="animation-duration: 4s;"></i>
+                <i id="musicFaIcon" class="fas fa-music"></i>
             </span>
-            <span id="musicText" class="text-xs font-semibold tracking-wider text-white">Тоқтату</span>
+            <span id="musicText" class="text-xs font-semibold tracking-wider text-white">Ән қосу</span>
         </button>
     </div>
 
@@ -231,23 +230,47 @@
 
     <script>
         const audio = document.getElementById('weddingMusic');
-        let isPlaying = true;
+        let isPlaying = false;
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('heroSection').style.backgroundImage = `url('${CONFIG.bgImage}')`;
             document.getElementById('musicSource').src = CONFIG.musicUrl;
             audio.load();
+
+            // Қолданушы бетті шерткенде әнді автоматты ойнату әрекеті (Autoplay саясатын айналып өту)
+            const handleFirstUserInteraction = () => {
+                if (!isPlaying) {
+                    playAudio();
+                }
+                document.removeEventListener('click', handleFirstUserInteraction);
+                document.removeEventListener('touchstart', handleFirstUserInteraction);
+            };
+
+            document.addEventListener('click', handleFirstUserInteraction);
+            document.addEventListener('touchstart', handleFirstUserInteraction);
         });
 
+        function playAudio() {
+            audio.play().then(() => {
+                isPlaying = true;
+                document.getElementById('musicText').textContent = 'Тоқтату';
+                document.getElementById('musicFaIcon').classList.add('animate-spin');
+            }).catch(err => {
+                console.log("Автоматты қосылу бұғатталды:", err);
+            });
+        }
+
         function toggleMusic() {
+            const musicText = document.getElementById('musicText');
+            const musicFaIcon = document.getElementById('musicFaIcon');
+
             if (isPlaying) {
                 audio.pause();
                 isPlaying = false;
-                document.getElementById('musicText').textContent = 'Ойнату';
+                musicText.textContent = 'Ән қосу';
+                musicFaIcon.classList.remove('animate-spin');
             } else {
-                audio.play();
-                isPlaying = true;
-                document.getElementById('musicText').textContent = 'Тоқтату';
+                playAudio();
             }
         }
 
